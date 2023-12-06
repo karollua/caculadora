@@ -1,80 +1,48 @@
 const express = require('express');
+const cors = require('cors');
+
 const app = express();
-const port = 3000;
 
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-app.get('/add/:num1/:num2', (req, res) => {
-    const num1 = parseInt(req.params.num1);
-    const num2 = parseInt(req.params.num2);
-    const sum = num1 + num2;
-    res.json({ result: sum });
+app.get('/calculadora', (req, res) => {
+ const { operacao, valor1, valor2 } = req.query;
+
+ switch (operacao) {
+    case 'adição':
+      return res.json({ resultado: parseFloat(valor1) + parseFloat(valor2) });
+    case 'subtração':
+      return res.json({ resultado: parseFloat(valor1) - parseFloat(valor2) });
+    case 'multiplicação':
+      return res.json({ resultado: parseFloat(valor1) * parseFloat(valor2) });
+    case 'divisão':
+      return res.json({ resultado: parseFloat(valor1) / parseFloat(valor2) });
+    case 'resto':
+      return res.json({ resultado: parseFloat(valor1) % parseFloat(valor2) });
+    default:
+      return res.status(400).json({ erro: 'Operação inválida' });
+ }
 });
 
-app.get('/subtract/:num1/:num2', (req, res) => {
-    const num1 = parseInt(req.params.num1);
-    const num2 = parseInt(req.params.num2);
-    const difference = num1 - num2;
-    res.json({ result: difference });
+app.post('/calculadora', (req, res) => {
+ const { operacao, valor1, valor2 } = req.body;
+
+ switch (operacao) {
+    case 'adição':
+      return res.json({ resultado: parseFloat(valor1) + parseFloat(valor2) });
+    case 'subtração':
+      return res.json({ resultado: parseFloat(valor1) - parseFloat(valor2) });
+    case 'multiplicação':
+      return res.json({ resultado: parseFloat(valor1) * parseFloat(valor2) });
+    case 'divisão':
+      return res.json({ resultado: parseFloat(valor1) / parseFloat(valor2) });
+    case 'resto':
+      return res.json({ resultado: parseFloat(valor1) % parseFloat(valor2) });
+    default:
+      return res.status(400).json({ erro: 'Operação inválida' });
+ }
 });
 
-app.get('/multiply/:num1/:num2', (req, res) => {
-    const num1 = parseInt(req.params.num1);
-    const num2 = parseInt(req.params.num2);
-    const product = num1 * num2;
-    res.json({ result: product });
-});
-
-app.get('/divide/:num1/:num2', (req, res) => {
-    const num1 = parseInt(req.params.num1);
-    const num2 = parseInt(req.params.num2);
-    const quotient = num1 / num2;
-    res.json({ result: quotient });
-});
-
-app.get('/remainder/:num1/:num2', (req, res) => {
-    const num1 = parseInt(req.params.num1);
-    const num2 = parseInt(req.params.num2);
-    const remainder = num1 % num2;
-    res.json({ result: remainder });
-});
-
-app.post('/add', (req, res) => {
-    const num1 = parseInt(req.body.num1);
-    const num2 = parseInt(req.body.num2);
-    const sum = num1 + num2;
-    res.json({ result: sum });
-});
-
-app.post('/subtract', (req, res) => {
-    const num1 = parseInt(req.body.num1);
-    const num2 = parseInt(req.body.num2);
-    const difference = num1 - num2;
-    res.json({ result: difference });
-});
-
-app.post('/multiply', (req, res) => {
-    const num1 = parseInt(req.body.num1);
-    const num2 = parseInt(req.body.num2);
-    const product = num1 * num2;
-    res.json({ result: product });
-});
-
-app.post('/divide', (req, res) => {
-    const num1 = parseInt(req.body.num1);
-    const num2 = parseInt(req.body.num2);
-    const quotient = num1 / num2;
-    res.json({ result: quotient });
-});
-
-app.post('/remainder', (req, res) => {
-    const num1 = parseInt(req.body.num1);
-    const num2 = parseInt(req.body.num2);
-    const remainder = num1 % num2;
-    res.json({ result: remainder });
-});
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Servidor rodando na porta ${port}`));
